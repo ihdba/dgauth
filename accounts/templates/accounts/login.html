@@ -11,9 +11,9 @@
                         <div class="card-body">
                             <h2>Login</h2>
                             <hr>
-                            {% if template_data.error %}
+                            {% if ctx.error %}
                                 <div class="alert alert-dabger" role="alert">
-                                    {{ template_data.error}}
+                                    {{ ctx.error}}
                                 </div>
                             {% endif %}
 
