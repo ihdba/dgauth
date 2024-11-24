@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
 
-from .models import Movie
+from .models import Movie, Review
 
 def index(request):
     
@@ -24,9 +24,43 @@ def index(request):
 
 def show(request, id):
     movie = Movie.objects.get(id=id)
+    reviews = Review.objects.filter(movie=movie)
 
     ctx = {
         'movie': movie,
+        'reviews': reviews,
     }
     
     return render(request, 'movies/show.html', ctx)
+
+
+@login_required
+def create_review(request, id):
+    if request.method == 'POST' and request.POST['comment'] != '':
+        movie = Movie.objects.get(id=id)
+        review = Review()
+        review.comment = request.POST['comment']
+        review.movie = movie
+        review.user = request.user
+        review.save()
+        return redirect('movies:show', id=id)
+    else:
+        return redirect('movies:show', id=id)
+    
+@login_required
+def edit_review(request, id, review_id):
+    review = get_object_or_404(Review, id=review_id)
+    if request.user != review.user:
+        return redirect('movies:show', id=id)
+    if request.method =='GET':
+        ctx = {}
+        ctx['title'] = 'Edit Review'
+        ctx['review'] = review
+        return render(request, 'movies/edit_review.html', ctx)
+    elif request.method =='POST' and request.POST['comment'] != '':
+        review = Review.objects.get(id=review_id)
+        review.comment = request.POST['comment']
+        review.save()
+        return redirect('movies:show', id=id)
+    else:
+        return redirect('movies:show', id=id)
