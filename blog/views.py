@@ -16,3 +16,8 @@ def words(request):
 def notes(request):
     
     return render(request, 'blog/notes.html')
+
+
+def about(request):
+    
+    return render(request, 'blog/about.html')

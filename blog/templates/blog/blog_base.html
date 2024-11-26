@@ -9,6 +9,13 @@
 </head>
 <body>
     
+    <header>
+        <a href="{% url "home:index" %}">Movies</a>
+        <a href="{% url "blog:index" %}">Blog</a>
+        <a href="{% url "blog:words" %}">Words</a>
+        <a href="{% url "blog:notes" %}">Notes</a>
+        <a href="{% url "blog:about" %}">About</a>
+    </header>
     {% block content %}
 
     {% endblock content %}
