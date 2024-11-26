@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from .forms import CustomUserCreationForm, CustomErrorList
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 @login_required
 def logout(request):
@@ -43,3 +44,9 @@ def signup(request):
             return render(request, 'accounts/signup.html', {'ctx': ctx})
 
 
+@login_required
+def orders(request):
+    ctx = {}
+    ctx['title'] = 'Orders'
+    ctx['orders'] = request.user.order_set.all()
+    return render(request, 'accounts/orders.html', ctx)

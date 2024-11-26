@@ -58,8 +58,8 @@ def purchase(request):
         item.quantity = cart[str(movie.id)]
         item.save()
         
-        request.session['cart'] = {}
-        ctx = {}
-        ctx['title'] = 'Purchase confirmation'
-        ctx['order_id'] = order.id
-        return render(request, 'cart/purchase.html', ctx)
+    request.session['cart'] = {}
+    ctx = {}
+    ctx['title'] = 'Purchase confirmation'
+    ctx['order_id'] = order.id
+    return render(request, 'cart/purchase.html', ctx)
